@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: vaideesh30/three-tier-app:backend-1.4
+        ports:
+        - containerPort: 8080
+        envFrom:
+        - secretRef:
+            name: sql-secret

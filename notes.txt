@@ -1,0 +1,124 @@
+Credentials:
+windowsadmin
+Welcome@12345
+
+dbadmin
+Welcome@12345
+userdb
+userdbadmin
+
+Prequisites:
+install GIT:
+https://git-scm.com/downloads/win
+install github cli view CMD:
+winget install --id GitHub.cli
+close and reopen cmd:
+gh auth login
+git clone https://github.com/vaideeshwarank/three-tier-app-demo.git
+git config --global user.email "vaideeshwaran30@gmail.com"
+git config --global user.name "vaideeshk30"
+git init
+git add .
+git commit -m “
+
+
+1) install NodeJs along with chocolatey and python
+https://nodejs.org/dist/v22.11.0/node-v22.11.0-x64.msi
+node -v
+npm -v
+2) install docker engine for windows
+3) install visual studio code
+4) install npx:
+npm install -g npx
+5) npm install
+6)npm start from frontend directory
+7) from frontend directory:
+docker build -t my-react-app -f Frontend_Dockerfile.dockerfile .
+8) run 
+docker run -p 3000:3000 my-react-app
+9) from backend directory:
+docker build -t my-backend-app -f Backend_Dockerfile .
+8) run 
+docker run -p 8080:8080 my-backend-app
+
+------
+9) login to docker hub:
+docker login -u vaideesh30
+Lenovo@123
+10)tag docker images:
+docker tag my-react-app vaideesh30/three-tier-app:frontend
+docker tag my-backend-app vaideesh30/three-tier-app:backend
+11) push to docker hub:
+docker push vaideesh30/three-tier-app:frontend
+docker push vaideesh30/three-tier-app:backend
+------------------------------------------
+12) install kubectl (using curl in powershell):
+curl.exe -LO "https://dl.k8s.io/release/v1.31.0/bin/windows/amd64/kubectl.exe"
+13) install AZ CLI (using powershell command):
+$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; Remove-Item .\AzureCLI.msi
+14) connect to AKS cluster:
+az login
+az account set --subscription 91a81a59-5a8b-49e1-adf6-2a932d8944df
+az aks get-credentials --resource-group wztest-rg --name wztemp-aks --overwrite-existing
+----------------------------------------
+15) create secret for docker hub connection :
+kubectl create secret docker-registry dockerhub-secret --docker-username=vaideesh30 --docker-password=Lenovo@123 --docker-email=vaideeshwaran30@gmail.com
+kubectl create secret generic db-secret --from-literal=SQL_SERVER='wztest-sqlserver.database.windows.net' --from-literal=SQL_DATABASE='userdb' --from-literal=SQL_USER='userdbadmin' --from-literal=SQL_PASSWORD='Welcome@12345'
+
+  SQL_SERVER: wztest-sqlserver.database.windows.net
+  SQL_DATABASE: userdb
+  SQL_USER: userdbadmin
+  SQL_PASSWORD: Welcome@12345
+
+SQL_SERVER: d3p0ZXN0LXNxbHNlcnZlci5kYXRhYmFzZS53aW5kb3dzLm5ldA==
+SQL_DATABASE: dXNlcmRi
+SQL_USER: dXNlcmRiYWRtaW4=
+SQL_PASSWORD: V2VsY29tZUAxMjM0NQ==
+
+
+16) apply the deploy and service yaml files.
+----------------------------------------
+17) rebuilding new docker image.
+docker build -t vaideesh30/three-tier-app:frontend-1.1 -f Frontend_Dockerfile.dockerfile .
+docker build -t vaideesh30/three-tier-app:backend-1.1 -f Backend_Dockerfile .
+
+docker push vaideesh30/three-tier-app:frontend-1.1
+docker push vaideesh30/three-tier-app:backend-1.1
+
+# In backend directory
+docker build -t vaideesh30/three-tier-app:backend-1.2 -f Backend_Dockerfile .
+# In frontend directory
+docker build -t vaideesh30/three-tier-app:frontend-1.2 -f Frontend_Dockerfile.dockerfile .
+
+docker push vaideesh30/three-tier-app:backend-1.2
+docker push vaideesh30/three-tier-app:frontend-1.2
+
+# In backend directory
+docker build -t vaideesh30/three-tier-app:backend-1.4 -f Dockerfile .
+# In frontend directory
+docker build -t vaideesh30/three-tier-app:frontend-1.4 -f Dockerfile .
+
+docker push vaideesh30/three-tier-app:backend-1.4
+docker push vaideesh30/three-tier-app:frontend-1.4
+
+docker run -p 3000:80 vaideesh30/three-tier-app:frontend-1.4
+----------------------------------------
+18) create sql server, add firewall rules to include the VM IP and AKS loadbalancer IP
+create database named "userdb"
+execute in master DB to create login--
+CREATE LOGIN userdbadmin WITH PASSWORD = 'Welcome@12345';-- Create a login
+execute in userdb DB to -
+CREATE USER userdbadmin FOR LOGIN userdbadmin;  -- Create a user in the database
+Grant permissions--
+GRANT EXECUTE TO userdbadmin
+GRANT SELECT TO userdbadmin
+GRANT INSERT TO userdbadmin
+GRANT UPDATE TO userdbadmin
+GRANT DELETE TO userdbadmin
+GRANT REFERENCES TO userdbadmin
+GRANT ALTER ON SCHEMA::dbo TO userdbadmin
+GRANT CREATE TABLE TO userdbadmin
+
+
+
+
